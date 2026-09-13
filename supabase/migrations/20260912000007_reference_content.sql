@@ -33,41 +33,41 @@ insert into public.portfolio_projects
    story, what_we_did, results, engagement_stats, delivery_time_label,
    related_service_id, related_package_id, featured, published, published_at)
 values
-  ('04000000-0000-4000-8000-000000000001', 'Ramnagar 47K Viral', 'ramnagar-47k-viral',
+  ('04000000-0000-4000-8000-000000000001', 'Ramnagar Festival', 'ramnagar-47k-viral',
    '01000000-0000-4000-8000-000000000011', null, null, null, 'Hyderabad', 2026,
    'Festival heat — captured, cut and posted while the crowd was still chanting.',
    '["On-location capture","Fast same-day edit","Social-first vertical reel"]'::jsonb,
-   '[]'::jsonb, '[{"label":"LIKES","value":"47K"}]'::jsonb, null,
+   '[]'::jsonb, '[]'::jsonb, null,
    '02000000-0000-4000-8000-000000000002', null, true, true, now()),
   ('04000000-0000-4000-8000-000000000002', 'Ramanthapur Ka Raja', 'ramanthapur-ka-raja',
    '01000000-0000-4000-8000-000000000011', null, null, null, 'Hyderabad', 2026,
    'A neighborhood icon, followed from aagman to visarjan.',
    '["On-location capture","Fast same-day edit","Social-first vertical reel"]'::jsonb,
-   '[]'::jsonb, '[{"label":"LIKES","value":"2.2K"}]'::jsonb, null,
+   '[]'::jsonb, '[]'::jsonb, null,
    '02000000-0000-4000-8000-000000000002', null, false, true, now()),
   ('04000000-0000-4000-8000-000000000003', 'Dhoolpet Ganesh', 'dhoolpet-ganesh',
    '01000000-0000-4000-8000-000000000011', null, null, null, 'Hyderabad', 2026,
    'Pre-dawn lanes, low light, zero retakes.',
    '["Low-light on-location capture","Fast edit","Social-first reel"]'::jsonb,
-   '[]'::jsonb, '[{"label":"LIKES","value":"230"}]'::jsonb, null,
+   '[]'::jsonb, '[]'::jsonb, null,
    '02000000-0000-4000-8000-000000000002', null, false, true, now()),
   ('04000000-0000-4000-8000-000000000004', 'Naming Ceremony', 'naming-ceremony',
    '01000000-0000-4000-8000-000000000001', null, null, null, 'Hyderabad', 2026,
    'A family milestone, kept intimate and cinematic.',
    '["Quiet on-location capture","Warm cinematic edit","Family-ready delivery"]'::jsonb,
-   '[]'::jsonb, '[{"label":"LIKES","value":"120"}]'::jsonb, null,
+   '[]'::jsonb, '[]'::jsonb, null,
    '02000000-0000-4000-8000-000000000005', null, false, true, now()),
   ('04000000-0000-4000-8000-000000000005', 'Bonalu Festival', 'bonalu-festival',
    '01000000-0000-4000-8000-000000000012', null, null, null, 'Hyderabad', 2026,
    'Culture in motion — drums, color and devotion.',
    '["On-location capture","Fast edit","Social-first reel"]'::jsonb,
-   '[]'::jsonb, '[{"label":"LIKES","value":"1.8K"}]'::jsonb, null,
+   '[]'::jsonb, '[]'::jsonb, null,
    '02000000-0000-4000-8000-000000000002', null, false, true, now()),
   ('04000000-0000-4000-8000-000000000006', 'Tirupati Temple', 'tirupati-temple',
    '01000000-0000-4000-8000-000000000011', null, null, null, 'Tirupati', 2026,
    'Devotion, framed with patience.',
    '["Respectful on-location capture","Cinematic edit","Social-ready reel"]'::jsonb,
-   '[]'::jsonb, '[{"label":"LIKES","value":"890"}]'::jsonb, null,
+   '[]'::jsonb, '[]'::jsonb, null,
    '02000000-0000-4000-8000-000000000002', null, false, true, now())
 on conflict (id) do nothing;
 
@@ -75,8 +75,7 @@ on conflict (id) do nothing;
 -- proof_stats — owner-published numbers only
 -- ---------------------------------------------------------------------------
 insert into public.proof_stats (label, value, suffix, ordering, published) values
-  ('GANESH AAGMANS', '20', '+', 10, true),
-  ('VIRAL REEL LIKES', '47', 'K+', 20, true)
+  ('GANESH AAGMANS', '20', '+', 10, true)
 on conflict (id) do nothing;
 
 -- ---------------------------------------------------------------------------

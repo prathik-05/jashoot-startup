@@ -1,458 +1,483 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useMemo, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
+import type { PortfolioProject, ServiceCategory } from "@/lib/schema";
+import { Section, SectionHead } from "../ui/section";
+import { ButtonLink } from "../ui/button";
 import { trackEvent } from "@/lib/track";
-import { Container } from "@/components/ui/container";
 
-export interface AvailableShoot {
-  id: string;
-  slug: string;
-  title: string;
-  category: string;
-  price: string;
-  priceNote: string;
-  turnaround: string;
-  tag: string;
-  deliverables: string;
-  description: string;
-  badge: string;
-  accentColor: string;
-  svgVisual: React.ReactNode;
-}
-
-export const TOP_5_SHOOTS: AvailableShoot[] = [
-  {
-    id: "automobile",
-    slug: "automobile",
-    title: "Automobile Shoot",
-    category: "Car & Superbike",
-    price: "₹2,000",
-    priceNote: "per viral reel",
-    turnaround: "24-48 HRS",
-    tag: "SPEED RAMPS · EXHAUST AUDIO",
-    deliverables: "1 High-Octane 4K Reel · Audio Sync · Color Grade",
-    description: "Dynamic rolling shots, exhaust rev sound design, dramatic low angles and speed-ramped transitions.",
-    badge: "MOST POPULAR",
-    accentColor: "#E63838",
-    svgVisual: (
-      <svg viewBox="0 0 300 450" className="w-full h-full object-cover">
-        <defs>
-          <linearGradient id="auto-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#250808" />
-            <stop offset="50%" stopColor="#140D0D" />
-            <stop offset="100%" stopColor="#080707" />
-          </linearGradient>
-          <radialGradient id="auto-glow" cx="50%" cy="40%" r="50%">
-            <stop offset="0%" stopColor="#E63838" stopOpacity="0.45" />
-            <stop offset="60%" stopColor="#E63838" stopOpacity="0.05" />
-            <stop offset="100%" stopColor="transparent" />
-          </radialGradient>
-        </defs>
-        <rect width="300" height="450" fill="url(#auto-grad)" />
-        <rect width="300" height="450" fill="url(#auto-glow)" />
-        {/* Speed lines & neon trails */}
-        <path d="M-50 260 L350 220" stroke="#E63838" strokeWidth="2.5" opacity="0.6" strokeDasharray="12 6" />
-        <path d="M-50 285 L350 245" stroke="#E63838" strokeWidth="4" opacity="0.8" />
-        <path d="M-50 310 L350 270" stroke="#F0EBDC" strokeWidth="1.5" opacity="0.4" strokeDasharray="8 8" />
-        {/* Supercar silhouette outline */}
-        <path d="M30 290 Q60 250 110 240 L180 238 Q220 245 270 280 L280 295 L20 295 Z" fill="#0E0E11" stroke="#E63838" strokeWidth="1.5" />
-        {/* Headlight beam */}
-        <polygon points="260,265 320,250 320,290" fill="#FFE57F" opacity="0.25" />
-        <circle cx="260" cy="265" r="4" fill="#FFE57F" />
-        {/* Wheel glow */}
-        <circle cx="75" cy="295" r="18" fill="#1A1818" stroke="#E63838" strokeWidth="2" />
-        <circle cx="230" cy="295" r="18" fill="#1A1818" stroke="#E63838" strokeWidth="2" />
-      </svg>
-    ),
-  },
-  {
-    id: "function-events",
-    slug: "function-events",
-    title: "Event & Function",
-    category: "Birthday & Party",
-    price: "₹2,000",
-    priceNote: "per hour coverage",
-    turnaround: "SAME DAY / 24H",
-    tag: "LIVE CANDIDS · CELEBRATION",
-    deliverables: "Hourly Live Coverage · Same-Day Reel · Key Moments",
-    description: "Candid celebrations for birthdays, naming ceremonies, anniversaries, and family get-togethers.",
-    badge: "FLEXIBLE HOURLY",
-    accentColor: "#F59E0B",
-    svgVisual: (
-      <svg viewBox="0 0 300 450" className="w-full h-full object-cover">
-        <defs>
-          <linearGradient id="event-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#1C1405" />
-            <stop offset="50%" stopColor="#120E08" />
-            <stop offset="100%" stopColor="#080706" />
-          </linearGradient>
-          <radialGradient id="event-bokeh" cx="50%" cy="35%" r="60%">
-            <stop offset="0%" stopColor="#F59E0B" stopOpacity="0.35" />
-            <stop offset="70%" stopColor="#F59E0B" stopOpacity="0.05" />
-            <stop offset="100%" stopColor="transparent" />
-          </radialGradient>
-        </defs>
-        <rect width="300" height="450" fill="url(#event-grad)" />
-        <rect width="300" height="450" fill="url(#event-bokeh)" />
-        {/* Warm bokeh spheres */}
-        <circle cx="60" cy="140" r="28" fill="#F59E0B" opacity="0.18" />
-        <circle cx="220" cy="180" r="38" fill="#F59E0B" opacity="0.14" />
-        <circle cx="140" cy="240" r="44" fill="#E63838" opacity="0.12" />
-        <circle cx="80" cy="270" r="16" fill="#FBBF24" opacity="0.25" />
-        <circle cx="230" cy="280" r="20" fill="#FBBF24" opacity="0.22" />
-        {/* Celebration sparkles */}
-        <polygon points="150,110 154,124 168,128 154,132 150,146 146,132 132,128 146,124" fill="#FDE68A" opacity="0.75" />
-        <polygon points="90,190 92,198 100,200 92,202 90,210 88,202 80,200 88,198" fill="#FDE68A" opacity="0.6" />
-        <polygon points="210,130 212,136 218,138 212,140 210,146 208,140 202,138 208,136" fill="#FDE68A" opacity="0.6" />
-      </svg>
-    ),
-  },
-  {
-    id: "brand-product",
-    slug: "brand-product",
-    title: "Brand & Business",
-    category: "Cafes & Retail",
-    price: "₹2,500",
-    priceNote: "per promo reel",
-    turnaround: "24-48 HRS",
-    tag: "PRODUCT SHOWCASE · AMBIENCE",
-    deliverables: "2 Vertical Promo Reels · Macro Product · Vibe Cut",
-    description: "Cafe walkthroughs, culinary sizzles, retail store launches, and product showcases designed to convert.",
-    badge: "HIGH CONVERSION",
-    accentColor: "#A855F7",
-    svgVisual: (
-      <svg viewBox="0 0 300 450" className="w-full h-full object-cover">
-        <defs>
-          <linearGradient id="brand-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#1A0826" />
-            <stop offset="50%" stopColor="#110719" />
-            <stop offset="100%" stopColor="#07040A" />
-          </linearGradient>
-          <radialGradient id="brand-glow" cx="50%" cy="40%" r="50%">
-            <stop offset="0%" stopColor="#A855F7" stopOpacity="0.4" />
-            <stop offset="70%" stopColor="#A855F7" stopOpacity="0.06" />
-            <stop offset="100%" stopColor="transparent" />
-          </radialGradient>
-        </defs>
-        <rect width="300" height="450" fill="url(#brand-grad)" />
-        <rect width="300" height="450" fill="url(#brand-glow)" />
-        {/* Studio spotlight cone */}
-        <polygon points="150,40 40,320 260,320" fill="#C084FC" opacity="0.08" />
-        {/* Product pedestal */}
-        <ellipse cx="150" cy="285" rx="70" ry="16" fill="#1D1526" stroke="#A855F7" strokeWidth="1.5" />
-        {/* Stylized coffee / perfume / product silhouette */}
-        <rect x="132" y="210" width="36" height="65" rx="8" fill="#2E1C40" stroke="#C084FC" strokeWidth="1.5" />
-        <line x1="140" y1="200" x2="160" y2="200" stroke="#E9D5FF" strokeWidth="3" strokeLinecap="round" />
-        <line x1="150" y1="200" x2="150" y2="210" stroke="#E9D5FF" strokeWidth="2" />
-        {/* Glow particles */}
-        <circle cx="120" cy="180" r="3" fill="#E9D5FF" opacity="0.7" />
-        <circle cx="180" cy="165" r="2.5" fill="#E9D5FF" opacity="0.7" />
-      </svg>
-    ),
-  },
-  {
-    id: "fitness-creator",
-    slug: "fitness-creator",
-    title: "Gym & Fitness",
-    category: "Fitness & Creator",
-    price: "₹1,500 – ₹2,000",
-    priceNote: "per reel edit",
-    turnaround: "24 HRS",
-    tag: "DRAMATIC LIGHT · PUMP COVER",
-    deliverables: "1 Cinematic Workout Reel · Heavy Set Sync · Lighting",
-    description: "High-contrast dramatic lighting, aesthetic workout cuts, personal branding, and creator reels.",
-    badge: "POPULAR",
-    accentColor: "#06B6D4",
-    svgVisual: (
-      <svg viewBox="0 0 300 450" className="w-full h-full object-cover">
-        <defs>
-          <linearGradient id="fit-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#041B20" />
-            <stop offset="50%" stopColor="#051214" />
-            <stop offset="100%" stopColor="#02080A" />
-          </linearGradient>
-          <radialGradient id="fit-glow" cx="50%" cy="35%" r="55%">
-            <stop offset="0%" stopColor="#06B6D4" stopOpacity="0.4" />
-            <stop offset="70%" stopColor="#06B6D4" stopOpacity="0.05" />
-            <stop offset="100%" stopColor="transparent" />
-          </radialGradient>
-        </defs>
-        <rect width="300" height="450" fill="url(#fit-grad)" />
-        <rect width="300" height="450" fill="url(#fit-glow)" />
-        {/* Dramatic cross lighting */}
-        <line x1="0" y1="80" x2="300" y2="340" stroke="#06B6D4" strokeWidth="1" opacity="0.25" />
-        <line x1="300" y1="80" x2="0" y2="340" stroke="#06B6D4" strokeWidth="1" opacity="0.25" />
-        {/* Barbell silhouette */}
-        <line x1="50" y1="230" x2="250" y2="230" stroke="#22D3EE" strokeWidth="6" strokeLinecap="round" />
-        {/* Weight plates */}
-        <rect x="75" y="195" width="14" height="70" rx="4" fill="#0E2F35" stroke="#06B6D4" strokeWidth="1.5" />
-        <rect x="92" y="205" width="10" height="50" rx="3" fill="#0E2F35" stroke="#06B6D4" strokeWidth="1.5" />
-        <rect x="211" y="195" width="14" height="70" rx="4" fill="#0E2F35" stroke="#06B6D4" strokeWidth="1.5" />
-        <rect x="198" y="205" width="10" height="50" rx="3" fill="#0E2F35" stroke="#06B6D4" strokeWidth="1.5" />
-        {/* Cyan energy spark */}
-        <polygon points="150,170 153,180 163,183 153,186 150,196 147,186 137,183 147,180" fill="#67E8F9" opacity="0.8" />
-      </svg>
-    ),
-  },
-  {
-    id: "wedding-sangeet",
-    slug: "wedding-sangeet",
-    title: "Wedding & Sangeet",
-    category: "Couples & Wedding",
-    price: "₹7,000",
-    priceNote: "complete event approx",
-    turnaround: "24-48 HRS",
-    tag: "4K PRORES · GRAND COUPLE",
-    deliverables: "Cinematic Teaser Reel · 4K ProRes Master · Highlights",
-    description: "Haldi, energetic Sangeet, romantic pre-wedding, and grand ceremony reels captured with high-bitrate ProRes.",
-    badge: "PREMIUM",
-    accentColor: "#F43F5E",
-    svgVisual: (
-      <svg viewBox="0 0 300 450" className="w-full h-full object-cover">
-        <defs>
-          <linearGradient id="wed-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#240710" />
-            <stop offset="50%" stopColor="#16080C" />
-            <stop offset="100%" stopColor="#090305" />
-          </linearGradient>
-          <radialGradient id="wed-glow" cx="50%" cy="38%" r="60%">
-            <stop offset="0%" stopColor="#F43F5E" stopOpacity="0.4" />
-            <stop offset="70%" stopColor="#F43F5E" stopOpacity="0.06" />
-            <stop offset="100%" stopColor="transparent" />
-          </radialGradient>
-        </defs>
-        <rect width="300" height="450" fill="url(#wed-grad)" />
-        <rect width="300" height="450" fill="url(#wed-glow)" />
-        {/* Mandap / arch golden silhouette */}
-        <path d="M60 300 L60 170 Q150 110 240 170 L240 300" fill="none" stroke="#FDA4AF" strokeWidth="1.5" opacity="0.4" />
-        <path d="M80 300 L80 185 Q150 135 220 185 L220 300" fill="none" stroke="#F43F5E" strokeWidth="1" opacity="0.3" />
-        {/* Golden flower / fairy lights */}
-        <circle cx="100" cy="165" r="3" fill="#FECDD3" opacity="0.75" />
-        <circle cx="150" cy="125" r="4" fill="#FECDD3" opacity="0.85" />
-        <circle cx="200" cy="165" r="3" fill="#FECDD3" opacity="0.75" />
-        <circle cx="75" cy="220" r="2.5" fill="#FFE4E6" opacity="0.6" />
-        <circle cx="225" cy="220" r="2.5" fill="#FFE4E6" opacity="0.6" />
-        {/* Wedding rings interlocking icon */}
-        <circle cx="140" cy="245" r="16" fill="none" stroke="#FDE047" strokeWidth="2" opacity="0.75" />
-        <circle cx="160" cy="245" r="16" fill="none" stroke="#FB7185" strokeWidth="2" opacity="0.75" />
-      </svg>
-    ),
-  },
+const GRADIENTS = [
+  "from-red/20 to-canvas",
+  "from-[#1a0a0f] to-canvas",
+  "from-[#0a0f1a] to-canvas",
+  "from-[#0f1a0a] to-canvas",
 ];
 
-function SpotlightShootCard({
-  children,
-  active,
-  onClick,
-}: {
-  children: React.ReactNode;
-  active: boolean;
-  onClick: () => void;
-}) {
-  const cardRef = useRef<HTMLDivElement>(null);
-  const [pos, setPos] = useState({ x: 0, y: 0 });
-  const [isHovered, setIsHovered] = useState(false);
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!cardRef.current) return;
-    const rect = cardRef.current.getBoundingClientRect();
-    setPos({ x: e.clientX - rect.left, y: e.clientY - rect.top });
-  };
-
-  return (
-    <article
-      ref={cardRef}
-      onMouseMove={handleMouseMove}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      onClick={onClick}
-      className={`group relative rounded-2xl overflow-hidden bg-[#11100F] border flex flex-col justify-between transition-all duration-300 cursor-pointer shadow-xl shadow-black/40 hover:-translate-y-1.5 select-none ${
-        active
-          ? "border-red ring-1 ring-red/50 shadow-red/20"
-          : "border-white/[0.08] hover:border-red/40"
-      }`}
-    >
-      {/* Interactive Cursor Spotlight Glow */}
-      <div
-        className="pointer-events-none absolute -inset-px transition-opacity duration-300 z-10"
-        style={{
-          opacity: isHovered ? 1 : 0,
-          background: `radial-gradient(280px circle at ${pos.x}px ${pos.y}px, rgba(230, 56, 56, 0.24), transparent 75%)`,
-        }}
-      />
-      {children}
-    </article>
-  );
+function gradientFor(slug: string) {
+  let h = 0;
+  for (const ch of slug) h = (h * 31 + ch.charCodeAt(0)) % 997;
+  return GRADIENTS[h % GRADIENTS.length];
 }
+
+type Option = "a" | "b" | "c";
 
 export function WorkWall({
   projects,
   categories,
   settings,
-  preview,
+  preview = false,
 }: {
-  projects?: unknown[];
-  categories?: unknown[];
-  settings?: unknown;
+  projects: PortfolioProject[];
+  categories: ServiceCategory[];
+  settings: { headline?: string; kicker?: string };
   preview?: boolean;
-} = {}) {
-  void projects;
-  void categories;
-  void settings;
-  void preview;
-  const [activeShoot, setActiveShoot] = useState(0);
+}) {
+  const [filter, setFilter] = useState<string>("all");
+  const [option, setOption] = useState<Option>("a");
+
+  const catById = useMemo(
+    () => new Map(categories.map((c) => [c.id, c])),
+    [categories],
+  );
+
+  const filterCats = useMemo(
+    () => categories.filter((c) => c.published && ["events", "weddings", "bike", "car", "business", "brands", "food"].includes(c.slug)),
+    [categories],
+  );
+
+  const visible = useMemo(
+    () =>
+      (filter === "all"
+        ? projects
+        : projects.filter((p) => p.categoryId === filter)
+      ).slice(0, preview ? 6 : projects.length),
+    [projects, filter, preview],
+  );
+
+  const getCatName = (p: PortfolioProject) =>
+    p.categoryId ? catById.get(p.categoryId)?.name : undefined;
+
+  if (preview && projects.length === 0) return null;
 
   return (
-    <section id="work" className="mx-auto max-w-[1280px] px-4 md:px-6 py-14 md:py-24">
-      <Container>
-        {/* Header */}
-        <div className="flex flex-wrap items-end justify-between gap-6 mb-10">
-          <div>
-            <div className="font-mono-brand text-[10px] tracking-[0.2em] uppercase text-red mb-2 flex items-center gap-2">
-              <span className="size-1.5 rounded-full bg-red animate-pulse" />
-              <span>Real Deliverables · Clear Pricing</span>
-            </div>
-            <h2 className="font-display text-[36px] sm:text-[48px] lg:text-[60px] font-extrabold leading-[0.92] tracking-tight uppercase text-[#F0EBDC]">
-              AVAILABLE <span className="text-[#E63838]">SHOOTS.</span>
-            </h2>
-          </div>
-          <div className="max-w-[420px]">
-            <p className="font-sans text-[13px] sm:text-[14px] text-white/50 leading-relaxed">
-              Transparent, market-rate shoot packages for Hyderabad &amp; pan-India. Shot on iPhone 4K ProRes with same-day 24h edits delivered ready for Instagram.
-            </p>
-          </div>
-        </div>
+    <Section id="work">
+      <SectionHead
+        eyebrow={settings.kicker ?? "Real moments. Real Jashoots."}
+        title={settings.headline ?? "The Work"}
+      />
 
-        {/* Top 5 Shoots Grid with Interactive Spotlight */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-          {TOP_5_SHOOTS.map((shoot, idx) => (
-            <SpotlightShootCard
-              key={shoot.id}
-              active={idx === activeShoot}
-              onClick={() => setActiveShoot(idx)}
-            >
-              {/* Visual Thumbnail with Viewfinder Camera HUD */}
-              <div className="relative aspect-[4/5] w-full overflow-hidden bg-black">
-                {shoot.svgVisual}
-
-                {/* Viewfinder crosshair overlay */}
-                <div className="absolute inset-0 pointer-events-none p-3 flex flex-col justify-between">
-                  <div className="flex items-center justify-between text-[8px] font-mono-brand text-white/60">
-                    <span className="bg-black/60 px-2 py-0.5 rounded backdrop-blur-sm border border-white/10">
-                      [4K 60FPS]
-                    </span>
-                    <span className="bg-red/80 text-white font-bold px-1.5 py-0.5 rounded text-[7px] tracking-wider uppercase">
-                      {shoot.badge}
-                    </span>
-                  </div>
-                  <div className="flex items-center justify-between text-[8px] font-mono-brand text-white/50">
-                    <span className="text-[7px] tracking-widest uppercase">
-                      ISO 400 · 1/50s
-                    </span>
-                    <span className="text-[7px] tracking-widest uppercase text-red">
-                      ● REC
-                    </span>
-                  </div>
-                </div>
-
-                {/* Center Hover Play Button */}
-                <div className="absolute inset-0 grid place-items-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none bg-black/25 backdrop-blur-[2px]">
-                  <div className="w-11 h-11 rounded-full bg-red text-white grid place-items-center shadow-lg shadow-red/40 transform scale-90 group-hover:scale-100 transition-transform">
-                    <svg className="w-4 h-4 fill-white ml-0.5" viewBox="0 0 24 24">
-                      <polygon points="5 3 19 12 5 21 5 3" />
-                    </svg>
-                  </div>
-                </div>
-
-                {/* Bottom gradient fade into card body */}
-                <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-[#11100F] to-transparent pointer-events-none" />
-              </div>
-
-              {/* Card Information */}
-              <div className="p-4 flex-1 flex flex-col justify-between">
-                <div>
-                  <div className="font-mono-brand text-[9px] uppercase tracking-[0.14em] text-white/40 mb-1">
-                    {shoot.category}
-                  </div>
-                  <h3 className="font-display text-[17px] font-bold uppercase text-white leading-snug">
-                    {shoot.title}
-                  </h3>
-
-                  {/* Price Tag */}
-                  <div className="mt-2.5 flex items-baseline gap-1.5">
-                    <span className="font-display text-[22px] font-extrabold text-[#E63838]">
-                      {shoot.price}
-                    </span>
-                    <span className="text-[10px] font-mono-brand text-white/40">
-                      {shoot.priceNote}
-                    </span>
-                  </div>
-
-                  <p className="mt-2 text-[11px] font-sans text-white/55 leading-relaxed">
-                    {shoot.deliverables}
-                  </p>
-                </div>
-
-                {/* Direct Action Link to /enquire with shoot preset */}
-                <div className="mt-4 pt-3 border-t border-white/[0.06]">
-                  <Link
-                    href={`/enquire?service=${shoot.slug}`}
-                    onClick={() => trackEvent("package_cta_clicked", { content: shoot.slug })}
-                    className="w-full h-9 rounded-lg bg-white/[0.06] hover:bg-red hover:text-white text-white/80 font-sans font-bold text-[11px] uppercase tracking-wider flex items-center justify-center gap-1.5 transition-all duration-200 group-hover:border-transparent cursor-pointer"
-                  >
-                    <span>BOOK SHOOT</span>
-                    <span className="text-[10px]">→</span>
-                  </Link>
-                </div>
-              </div>
-            </SpotlightShootCard>
+      {/* Layout toggle */}
+      <div className="mt-6 flex items-center gap-4">
+        <div className="flex gap-1.5" role="tablist" aria-label="Filter work">
+          <FilterTab active={filter === "all"} label="All" onClick={() => setFilter("all")} />
+          {filterCats.map((c) => (
+            <FilterTab
+              key={c.id}
+              active={filter === c.id}
+              label={c.name}
+              onClick={() => setFilter(c.id)}
+            />
           ))}
         </div>
+        <span className="h-4 w-px bg-white/[0.08]" />
+        <div className="flex gap-1">
+          {(["a", "b", "c"] as Option[]).map((opt) => (
+            <button
+              key={opt}
+              type="button"
+              onClick={() => setOption(opt)}
+              className={`px-2 py-1 text-[0.55rem] font-bold uppercase tracking-[0.15em] transition-colors ${
+                option === opt
+                  ? "text-red"
+                  : "text-white/20 hover:text-white/40"
+              }`}
+            >
+              {opt === "a" ? "Editorial" : opt === "b" ? "Cinematic" : "Clean"}
+            </button>
+          ))}
+        </div>
+      </div>
 
-        {/* Interactive Active Shoot Preview Banner */}
-        <div className="mt-6 p-4 rounded-xl bg-gradient-to-r from-red/[0.08] via-black/40 to-black/60 border border-red/25 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 backdrop-blur-md">
-          <div className="flex items-center gap-3">
-            <span className="size-2 rounded-full bg-red animate-ping shrink-0" />
-            <div>
-              <div className="flex items-center gap-2">
-                <span className="font-mono-brand text-[9px] uppercase tracking-[0.16em] text-red font-semibold">
-                  ACTIVE SELECTION ({activeShoot + 1}/5)
-                </span>
-                <span className="text-[10px] text-white/40 font-mono">✦</span>
-                <span className="text-white text-xs font-bold font-display uppercase">
-                  {TOP_5_SHOOTS[activeShoot]?.title}
+      {/* Grid */}
+      {visible.length === 0 ? (
+        <p className="mt-8 border border-dashed border-white/[0.08] bg-white/[0.01] p-8 text-center text-white/20">
+          No published work in this lane yet — the Studio adds reels from the Work CMS.
+        </p>
+      ) : option === "a" ? (
+        <OptionA projects={visible} getCatName={getCatName} content={preview ? "home-work-wall" : "work-page-wall"} />
+      ) : option === "b" ? (
+        <OptionB projects={visible} getCatName={getCatName} content={preview ? "home-work-wall" : "work-page-wall"} />
+      ) : (
+        <OptionC projects={visible} getCatName={getCatName} content={preview ? "home-work-wall" : "work-page-wall"} />
+      )}
+
+      {/* CTA */}
+      {preview ? (
+        <div className="mt-8">
+          <ButtonLink href="/work" variant="ghost">
+            Explore all work
+          </ButtonLink>
+        </div>
+      ) : (
+        <p className="mt-8 text-[0.65rem] text-white/20">
+          Like what you see?{" "}
+          <Link href="/enquire" className="font-bold text-red/70 transition-colors hover:text-red">
+            Book a similar shoot →
+          </Link>
+        </p>
+      )}
+    </Section>
+  );
+}
+
+/* ── OPTION A: Editorial Magazine ───────────────────────────────────────
+   Asymmetric 3-col grid. First card spans 2 rows. Bold type. No borders. */
+
+function OptionA({
+  projects,
+  getCatName,
+  content,
+}: {
+  projects: PortfolioProject[];
+  getCatName: (p: PortfolioProject) => string | undefined;
+  content: string;
+}) {
+  return (
+    <div className="mt-8 grid grid-cols-2 gap-4 md:grid-cols-3">
+      {/* Hero card — tall */}
+      {projects[0] && (
+        <CardA project={projects[0]} catName={getCatName(projects[0])} content={content} tall />
+      )}
+      {/* Standard cards */}
+      {projects.slice(1).map((p) => (
+        <CardA key={p.id} project={p} catName={getCatName(p)} content={content} />
+      ))}
+    </div>
+  );
+}
+
+function CardA({
+  project,
+  catName,
+  content,
+  tall = false,
+}: {
+  project: PortfolioProject;
+  catName?: string;
+  content: string;
+  tall?: boolean;
+}) {
+  const media = project.previewReel ?? project.coverMedia;
+  return (
+    <article className={`group relative overflow-hidden bg-surface ${tall ? "row-span-2" : ""}`}>
+      <div className={`relative w-full ${tall ? "aspect-[9/16]" : "aspect-[9/16]"}`}>
+        {media ? (
+          <Image
+            src={media}
+            alt={project.title}
+            fill
+            sizes="(max-width: 768px) 50vw, 33vw"
+            className="object-cover transition-transform duration-700 group-hover:scale-[1.05]"
+            loading="lazy"
+          />
+        ) : (
+          <div className={`absolute inset-0 bg-gradient-to-b ${gradientFor(project.slug)} opacity-40`} />
+        )}
+
+        {/* Gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+
+        {/* Category */}
+        {catName && (
+          <div className="absolute left-4 top-4 z-10">
+            <span className="text-[0.55rem] font-bold uppercase tracking-[0.2em] text-red/80">
+              {catName}
+            </span>
+          </div>
+        )}
+
+        {/* Content */}
+        <div className="absolute inset-x-0 bottom-0 z-10 p-5">
+          <h3 className="text-display text-xl font-bold uppercase text-white transition-colors duration-300 group-hover:text-red sm:text-2xl">
+            {project.title}
+          </h3>
+          {project.location && (
+            <p className="mt-1.5 text-[0.6rem] uppercase tracking-[0.2em] text-white/30">
+              {project.location}
+              {project.projectYear ? ` · ${project.projectYear}` : ""}
+            </p>
+          )}
+
+          {/* Hover reveal CTA */}
+          <div className="mt-3 flex gap-2 opacity-0 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-0 translate-y-2">
+            <Link
+              href={`/work/${project.slug}`}
+              className="inline-flex items-center gap-2 bg-red px-4 py-2 text-[0.6rem] font-bold uppercase tracking-[0.15em] text-white transition-all duration-300 hover:brightness-110"
+              onClick={() => trackEvent("work_opened", { content, meta: { project: project.slug } })}
+            >
+              Watch reel
+            </Link>
+          </div>
+        </div>
+      </div>
+    </article>
+  );
+}
+
+/* ── OPTION B: Cinematic Showcase ──────────────────────────────────────
+   1 large hero + 5 small. Film-strip feel. Red accent bar. Vignette.    */
+
+function OptionB({
+  projects,
+  getCatName,
+  content,
+}: {
+  projects: PortfolioProject[];
+  getCatName: (p: PortfolioProject) => string | undefined;
+  content: string;
+}) {
+  const hero = projects[0];
+  const rest = projects.slice(1);
+
+  return (
+    <div className="mt-8">
+      {/* Hero row */}
+      {hero && (
+        <div className="grid gap-4 md:grid-cols-[2fr_1fr]">
+          <article className="group relative aspect-video overflow-hidden bg-canvas">
+            {hero.previewReel || hero.coverMedia ? (
+              <Image
+                src={hero.previewReel ?? hero.coverMedia!}
+                alt={hero.title}
+                fill
+                sizes="(max-width: 768px) 100vw, 66vw"
+                className="object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+                loading="lazy"
+              />
+            ) : (
+              <div className={`absolute inset-0 bg-gradient-to-br ${gradientFor(hero.slug)} opacity-30`} />
+            )}
+
+            {/* Vignette */}
+            <div className="absolute inset-0" style={{
+              background: "radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.6) 100%)"
+            }} />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
+
+            {/* Red accent bar */}
+            <div className="absolute bottom-0 left-0 h-1 w-0 bg-red transition-all duration-500 group-hover:w-full" />
+
+            {getCatName(hero) && (
+              <div className="absolute left-5 top-5 z-10">
+                <span className="text-[0.55rem] font-bold uppercase tracking-[0.2em] text-red">
+                  {getCatName(hero)}
                 </span>
               </div>
-              <p className="text-[11px] text-white/60 font-sans mt-0.5">
-                {TOP_5_SHOOTS[activeShoot]?.description}
-              </p>
-            </div>
-          </div>
-          <Link
-            href={`/enquire?service=${TOP_5_SHOOTS[activeShoot]?.slug}`}
-            onClick={() => trackEvent("package_cta_clicked", { content: TOP_5_SHOOTS[activeShoot]?.slug })}
-            className="inline-flex items-center gap-2 bg-red hover:bg-red/90 text-white font-mono-brand text-xs font-bold px-4 py-2.5 rounded-lg transition shadow-md shadow-red/25 active:scale-[0.98] uppercase tracking-wider shrink-0 cursor-pointer"
-          >
-            <span>Book {TOP_5_SHOOTS[activeShoot]?.title} ({TOP_5_SHOOTS[activeShoot]?.price})</span>
-            <span className="text-sm">→</span>
-          </Link>
-        </div>
+            )}
 
-        {/* Footer Guarantee banner */}
-        <div className="mt-10 p-4 rounded-xl bg-white/[0.02] border border-white/[0.06] flex flex-wrap items-center justify-between gap-4 text-xs font-mono-brand text-white/45">
-          <div className="flex items-center gap-2">
-            <span className="text-red">✦</span>
-            <span>CUSTOM PACKAGES AVAILABLE FOR TRAVEL &amp; MULTI-DAY FESTIVALS</span>
-          </div>
+            <div className="absolute inset-x-0 bottom-0 z-10 p-6">
+              <h3 className="text-display text-3xl font-bold uppercase text-white sm:text-4xl">
+                {hero.title}
+              </h3>
+              {hero.location && (
+                <p className="mt-2 text-[0.6rem] uppercase tracking-[0.2em] text-white/30">
+                  {hero.location}{hero.projectYear ? ` · ${hero.projectYear}` : ""}
+                </p>
+              )}
+              <div className="mt-3 opacity-0 transition-all duration-300 group-hover:opacity-100">
+                <Link
+                  href={`/work/${hero.slug}`}
+                  className="inline-flex items-center gap-2 bg-red px-4 py-2 text-[0.6rem] font-bold uppercase tracking-[0.15em] text-white"
+                  onClick={() => trackEvent("work_opened", { content, meta: { project: hero.slug } })}
+                >
+                  Watch reel
+                </Link>
+              </div>
+            </div>
+          </article>
+
+          {/* Side column */}
+          {rest.length > 0 && (
+            <div className="grid gap-4 grid-rows-2">
+              {rest.slice(0, 2).map((p) => (
+                <CardB key={p.id} project={p} catName={getCatName(p)} content={content} />
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Bottom row */}
+      {rest.length > 2 && (
+        <div className="mt-4 grid grid-cols-2 gap-4 md:grid-cols-4">
+          {rest.slice(2).map((p) => (
+            <CardB key={p.id} project={p} catName={getCatName(p)} content={content} />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function CardB({
+  project,
+  catName,
+  content,
+}: {
+  project: PortfolioProject;
+  catName?: string;
+  content: string;
+}) {
+  const media = project.previewReel ?? project.coverMedia;
+  return (
+    <article className="group relative aspect-[9/16] overflow-hidden bg-canvas">
+      {media ? (
+        <Image
+          src={media}
+          alt={project.title}
+          fill
+          sizes="(max-width: 768px) 50vw, 25vw"
+          className="object-cover transition-transform duration-700 group-hover:scale-[1.05]"
+          loading="lazy"
+        />
+      ) : (
+        <div className={`absolute inset-0 bg-gradient-to-b ${gradientFor(project.slug)} opacity-30`} />
+      )}
+
+      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
+      <div className="absolute bottom-0 left-0 h-0.5 w-0 bg-red transition-all duration-500 group-hover:w-full" />
+
+      {catName && (
+        <div className="absolute left-3 top-3 z-10">
+          <span className="text-[0.5rem] font-bold uppercase tracking-[0.2em] text-red/70">{catName}</span>
+        </div>
+      )}
+
+      <div className="absolute inset-x-0 bottom-0 z-10 p-4">
+        <h3 className="text-display text-sm font-bold uppercase text-white group-hover:text-red">
+          {project.title}
+        </h3>
+        <div className="mt-2 opacity-0 transition-all duration-300 group-hover:opacity-100">
           <Link
-            href="/enquire"
-            className="text-red hover:text-white transition-colors flex items-center gap-1"
+            href={`/work/${project.slug}`}
+            className="text-[0.55rem] font-bold uppercase tracking-[0.15em] text-red"
+            onClick={() => trackEvent("work_opened", { content, meta: { project: project.slug } })}
           >
-            <span>CUSTOM ENQUIRY DOCKET →</span>
+            Watch reel →
           </Link>
         </div>
-      </Container>
-    </section>
+      </div>
+
+      <Link
+        href={`/work/${project.slug}`}
+        aria-label={`Open ${project.title}`}
+        className="absolute inset-0 z-20"
+        onClick={() => trackEvent("work_opened", { content, meta: { project: project.slug } })}
+      />
+    </article>
+  );
+}
+
+/* ── OPTION C: Clean Breathing Grid ───────────────────────────────────
+   Uniform 3x2. Generous padding. Subtle depth. Minimal.               */
+
+function OptionC({
+  projects,
+  getCatName,
+  content,
+}: {
+  projects: PortfolioProject[];
+  getCatName: (p: PortfolioProject) => string | undefined;
+  content: string;
+}) {
+  return (
+    <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {projects.map((p) => (
+        <CardC key={p.id} project={p} catName={getCatName(p)} content={content} />
+      ))}
+    </div>
+  );
+}
+
+function CardC({
+  project,
+  catName,
+  content,
+}: {
+  project: PortfolioProject;
+  catName?: string;
+  content: string;
+}) {
+  const media = project.previewReel ?? project.coverMedia;
+  return (
+    <article className="group relative overflow-hidden bg-surface">
+      <div className="relative aspect-[9/16]">
+        {media ? (
+          <Image
+            src={media}
+            alt={project.title}
+            fill
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+            loading="lazy"
+          />
+        ) : (
+          <div className={`absolute inset-0 bg-gradient-to-b ${gradientFor(project.slug)} opacity-30`} />
+        )}
+
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+
+        {catName && (
+          <div className="absolute left-4 top-4 z-10">
+            <span className="rounded-full bg-black/60 px-2.5 py-1 text-[0.5rem] font-bold uppercase tracking-[0.2em] text-red/70 backdrop-blur-sm">
+              {catName}
+            </span>
+          </div>
+        )}
+
+        <div className="absolute inset-x-0 bottom-0 z-10 p-5">
+          <h3 className="text-display text-lg font-bold uppercase text-white transition-colors duration-300 group-hover:text-red">
+            {project.title}
+          </h3>
+          {project.location && (
+            <p className="mt-1 text-[0.55rem] uppercase tracking-[0.2em] text-white/25">
+              {project.location}{project.projectYear ? ` · ${project.projectYear}` : ""}
+            </p>
+          )}
+
+          <div className="mt-3 flex gap-2 opacity-0 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-0 translate-y-2">
+            <Link
+              href={`/work/${project.slug}`}
+              className="inline-flex items-center gap-2 border border-white/[0.15] px-3 py-1.5 text-[0.55rem] font-bold uppercase tracking-[0.15em] text-white transition-colors hover:bg-white hover:text-canvas"
+              onClick={() => trackEvent("work_opened", { content, meta: { project: project.slug } })}
+            >
+              Watch reel
+            </Link>
+          </div>
+        </div>
+      </div>
+    </article>
+  );
+}
+
+/* ── Shared ──────────────────────────────────────────────────────────── */
+
+function FilterTab({ active, label, onClick }: { active: boolean; label: string; onClick: () => void }) {
+  return (
+    <button
+      type="button"
+      role="tab"
+      aria-selected={active}
+      onClick={onClick}
+      className={`shrink-0 rounded-full px-4 py-1.5 font-display text-[0.6rem] uppercase tracking-[0.2em] transition-colors duration-300 ${
+        active
+          ? "bg-red text-white"
+          : "border border-white/[0.06] text-white/40 hover:border-white/[0.15] hover:text-white/70"
+      }`}
+    >
+      {label}
+    </button>
   );
 }
