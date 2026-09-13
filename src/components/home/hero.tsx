@@ -196,12 +196,12 @@ export function Hero({ settings }: { settings?: HeroSettings } = {}) {
                 <div className="bg-black/40 backdrop-blur-sm border border-white/20 px-3 py-1.5 rounded-full flex items-center gap-2 shadow-sm">
                   <span className="size-1.5 rounded-full bg-[#ef5b45] animate-pulse" />
                   <span className="font-mono-brand text-[9px] tracking-[.14em] text-white/90 uppercase">
-                    LIVE REEL
+                    FEATURED REEL
                   </span>
                 </div>
                 <div className="font-mono-brand text-[9px] tracking-[.16em] uppercase text-white/80 bg-black/50 px-2.5 py-1 rounded border border-white/15 backdrop-blur-sm flex items-center gap-1.5">
                   <span className="size-1 rounded-full bg-[#E63838] animate-ping" />
-                  <span>{isPlaying ? "PLAYING [4K]" : "STANDBY [00:47:12]"}</span>
+                  <span>{isPlaying ? "PLAYING [4K]" : "STANDBY"}</span>
                 </div>
               </div>
 
@@ -243,22 +243,6 @@ export function Hero({ settings }: { settings?: HeroSettings } = {}) {
               <div className="absolute bottom-5 right-5 z-20 font-mono-brand text-[8px] uppercase tracking-[0.14em] text-white/60 text-right pointer-events-none bg-black/50 px-2.5 py-1 rounded border border-white/10 backdrop-blur-sm">
                 <div>ISO 400 · 1/50s</div>
                 <div className="text-[#E63838]">PRORES LOG</div>
-              </div>
-            </div>
-
-            {/* Stats row below phone/video */}
-            <div className="mt-8 grid grid-cols-3 gap-2.5">
-              <div className="card p-3.5 text-center">
-                <div className="font-mono-brand text-[8px] uppercase tracking-[0.12em] text-white/50">Avg Delivery</div>
-                <div className="font-display text-lg font-bold text-[#F0EBDC] mt-0.5">12 MINS</div>
-              </div>
-              <div className="card p-3.5 text-center">
-                <div className="font-mono-brand text-[8px] uppercase tracking-[0.12em] text-white/50">Viral Reel</div>
-                <div className="font-display text-lg font-bold text-[#E63838] mt-0.5">47K LIKES</div>
-              </div>
-              <div className="card p-3.5 text-center">
-                <div className="font-mono-brand text-[8px] uppercase tracking-[0.12em] text-white/50">Based In</div>
-                <div className="font-display text-lg font-bold text-[#F0EBDC] mt-0.5">HYD</div>
               </div>
             </div>
           </div>

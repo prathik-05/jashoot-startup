@@ -246,15 +246,25 @@ export const WHATSAPP_NUMBER =
 export const WHATSAPP_DISPLAY =
   requireEnv("NEXT_PUBLIC_WHATSAPP_DISPLAY", "JASHOOTS");
 function resolveSiteUrl(): string {
-  const custom = process.env.NEXT_PUBLIC_SITE_URL?.trim();
-  if (custom && !custom.includes("localhost")) return custom;
+  let custom = process.env.NEXT_PUBLIC_SITE_URL?.trim();
+  if (custom) {
+    custom = custom.replace(/\/+$/, "");
+    if (!custom.includes("localhost") && !custom.includes("127.0.0.1")) {
+      if (custom.startsWith("http://")) {
+        custom = "https://" + custom.slice(7);
+      } else if (!custom.startsWith("https://")) {
+        custom = "https://" + custom;
+      }
+      return custom;
+    }
+    return custom;
+  }
   if (process.env.VERCEL_PROJECT_PRODUCTION_URL) {
-    return `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL.trim()}`;
+    return `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL.trim().replace(/\/+$/, "")}`;
   }
   if (process.env.VERCEL_URL) {
-    return `https://${process.env.VERCEL_URL.trim()}`;
+    return `https://${process.env.VERCEL_URL.trim().replace(/\/+$/, "")}`;
   }
-  if (custom) return custom;
   if (process.env.NODE_ENV === "production") {
     console.warn(
       "[JASHOOTS] WARNING: NEXT_PUBLIC_SITE_URL is not set in production. " +
