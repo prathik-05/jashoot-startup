@@ -1,36 +1,94 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# JASHOOTS
 
-## Getting Started
+**Production-grade cinematic reel production & media agency platform.**
 
-First, run the development server:
+Built with Next.js 16 (App Router & Turbopack), Supabase (PostgreSQL), Tailwind CSS, TypeScript, and Sentry.
+
+---
+
+## 🚀 Overview
+
+JASHOOTS provides an end-to-end platform for client enquiry, reel production workflow, studio project management, and automated lead alerts.
+
+- **Reel Portfolio**: Showreels, category filters, high-resolution media previews, and dynamic project pages.
+- **Client Conversion & Enquiries**: Interactive enquiry workflows, deep-linked WhatsApp enquiry paths, and client portal review.
+- **Studio Dashboard**: Real-time management of leads, projects, deliverables, and service packages.
+- **Automated Owner Alerts**: Instant notifications on new client submissions via WhatsApp.
+- **Enterprise-ready Backend**: Supabase PostgreSQL with strict Row Level Security (RLS), automated audit logging, and Upstash Redis rate limiting.
+
+---
+
+## 🛠️ Tech Stack
+
+- **Framework**: [Next.js 16](https://nextjs.org/) (App Router, Server Actions, Turbopack)
+- **Frontend**: [React 19](https://react.dev/), [Tailwind CSS v4](https://tailwindcss.com/), [Lucide React](https://lucide.dev/)
+- **Database & Auth**: [Supabase](https://supabase.com/) (PostgreSQL 15+, RLS, Storage)
+- **Maps**: [MapLibre GL](https://maplibre.org/)
+- **Validation**: [Zod](https://zod.dev/)
+- **Rate Limiting**: [@upstash/ratelimit](https://upstash.com/) + Upstash Redis
+- **Monitoring**: [Sentry](https://sentry.io/)
+
+---
+
+## 📦 Getting Started
+
+### Prerequisites
+
+- [Node.js](https://nodejs.org/) (v20+ recommended)
+- [npm](https://www.npmjs.com/) or [pnpm](https://pnpm.io/)
+
+### Installation
+
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/prathik-05/jashoot-startup.git
+   cd jashoot-startup
+   ```
+
+2. **Install dependencies:**
+   ```bash
+   npm install
+   ```
+
+3. **Configure Environment Variables:**
+   Copy the sample environment file:
+   ```bash
+   cp .env.example .env.local
+   ```
+   Fill in your Supabase credentials, Upstash Redis keys, and optional alert keys.
+
+4. **Run the development server:**
+   ```bash
+   npm run dev
+   ```
+   Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+---
+
+## 🗄️ Database & Migrations
+
+Database migrations are located in `supabase/migrations/` and managed with the Supabase CLI.
+
+For setup and deployment steps, refer to [DATABASE.md](./DATABASE.md).
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+# Validate migrations
+node scripts/validate-migrations.mjs
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🏗️ Production Build
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+To test the production build locally:
 
-## Learn More
+```bash
+npm run build
+npm run start
+```
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 📄 License
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Private repository. All rights reserved.

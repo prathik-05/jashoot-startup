@@ -41,3 +41,7 @@ next-env.d.ts
 .DS_Store
 Thumbs.db
 desktop.ini
+
+# AI tooling & prompts
+CLAUDE.md
+*-PROMPT.md
