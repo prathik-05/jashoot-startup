@@ -5,7 +5,6 @@ import { TrackPageView } from "@/components/track-page-view";
 import { Hero } from "@/components/home/hero";
 import { LiveTicker } from "@/components/ui/live-ticker";
 import { WorkWall } from "@/components/home/work-wall";
-import { ServicesSection } from "@/components/home/services-section";
 import { StatsStrip } from "@/components/home/stats-strip";
 import { Why } from "@/components/home/why";
 import { FounderSection } from "@/components/home/founder-section";
@@ -28,7 +27,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 /**
  * Homepage — reference-aligned section order:
- * Hero → Work → Services → Stats Strip → Why → Founder → Contact → FAQ → Footer
+ * Hero → Available Shoots & Services → Stats Strip → Why → Founder → Contact → FAQ → Footer
  */
 export default async function Home() {
   const data = await getCachedSiteData();
@@ -41,10 +40,10 @@ export default async function Home() {
       <WorkWall
         projects={data.projects}
         categories={data.categories}
+        services={data.services}
         settings={{}}
         preview
       />
-      <ServicesSection services={data.services} />
       <StatsStrip />
       <Why
         features={data.whyFeatures}

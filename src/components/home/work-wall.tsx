@@ -4,6 +4,7 @@ import { useState, useRef } from "react";
 import Link from "next/link";
 import { trackEvent } from "@/lib/track";
 import { Container } from "@/components/ui/container";
+import type { Service } from "@/lib/schema";
 
 export interface AvailableShoot {
   id: string;
@@ -239,16 +240,78 @@ export const TOP_5_SHOOTS: AvailableShoot[] = [
       </svg>
     ),
   },
+  {
+    id: "custom-other",
+    slug: "custom-shoot",
+    title: "Other / Custom Shoot",
+    category: "Tailored For You",
+    price: "Custom",
+    priceNote: "fair quote",
+    turnaround: "SAME DAY / 24H",
+    tag: "YOU NAME IT · WE SHOOT IT",
+    deliverables: "Festivals · College · Drone · Store Launch · Custom Cuts",
+    description: "Got a unique moment, store launch, festival, or private event? Tell us your vision and we'll frame it in 4K ProRes.",
+    badge: "DIRECT ENQUIRY",
+    accentColor: "#3B82F6",
+    svgVisual: (
+      <svg viewBox="0 0 300 450" className="w-full h-full object-cover">
+        <defs>
+          <linearGradient id="custom-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#08182B" />
+            <stop offset="50%" stopColor="#080F18" />
+            <stop offset="100%" stopColor="#05080C" />
+          </linearGradient>
+          <radialGradient id="custom-glow" cx="50%" cy="40%" r="60%">
+            <stop offset="0%" stopColor="#3B82F6" stopOpacity="0.4" />
+            <stop offset="70%" stopColor="#3B82F6" stopOpacity="0.05" />
+            <stop offset="100%" stopColor="transparent" />
+          </radialGradient>
+        </defs>
+        <rect width="300" height="450" fill="url(#custom-grad)" />
+        <rect width="300" height="450" fill="url(#custom-glow)" />
+        {/* Cinema lens aperture blades */}
+        <circle cx="150" cy="225" r="70" fill="none" stroke="#60A5FA" strokeWidth="2" opacity="0.6" strokeDasharray="6 4" />
+        <circle cx="150" cy="225" r="45" fill="#0D2137" stroke="#3B82F6" strokeWidth="2.5" />
+        <circle cx="150" cy="225" r="22" fill="#1D4ED8" opacity="0.5" />
+        {/* Sparkle stars */}
+        <polygon points="150,115 154,127 166,131 154,135 150,147 146,135 134,131 146,127" fill="#93C5FD" opacity="0.8" />
+        <polygon points="90,290 92,298 100,300 92,302 90,310 88,302 80,300 88,298" fill="#93C5FD" opacity="0.6" />
+        <polygon points="215,280 217,286 223,288 217,290 215,296 213,290 207,288 213,286" fill="#93C5FD" opacity="0.6" />
+      </svg>
+    ),
+  },
 ];
+
+const SERVICE_ICONS: Record<string, string> = {
+  "instant-reel": "⚡",
+  wedding: "💍",
+  "hourly-coverage": "⏱️",
+  "corporate-event": "🏢",
+  "corporate-events": "🏢",
+  "bike shoot": "🏍️",
+  "car shoot": "🚗",
+  automobile: "🏎️",
+  "food reel": "🍔",
+  "food-reels": "🍔",
+  "brand shoot": "📸",
+  "brand-promo": "📸",
+  "store-opening": "🏪",
+  "birthday-parties": "🎉",
+  "custom-shoot": "🎬",
+  "vehicle-delivery": "🚗",
+  "product-launch": "🚀",
+};
 
 function SpotlightShootCard({
   children,
   active,
   onClick,
+  className = "",
 }: {
   children: React.ReactNode;
   active: boolean;
   onClick: () => void;
+  className?: string;
 }) {
   const cardRef = useRef<HTMLDivElement>(null);
   const [pos, setPos] = useState({ x: 0, y: 0 });
@@ -271,7 +334,7 @@ function SpotlightShootCard({
         active
           ? "border-red ring-1 ring-red/50 shadow-red/20"
           : "border-white/[0.08] hover:border-red/40"
-      }`}
+      } ${className}`}
     >
       {/* Interactive Cursor Spotlight Glow */}
       <div
@@ -289,11 +352,13 @@ function SpotlightShootCard({
 export function WorkWall({
   projects,
   categories,
+  services,
   settings,
   preview,
 }: {
   projects?: unknown[];
   categories?: unknown[];
+  services?: Service[];
   settings?: unknown;
   preview?: boolean;
 } = {}) {
@@ -302,18 +367,43 @@ export function WorkWall({
   void settings;
   void preview;
   const [activeShoot, setActiveShoot] = useState(0);
+  const carouselRef = useRef<HTMLDivElement>(null);
+
+  const scrollToShoot = (index: number) => {
+    setActiveShoot(index);
+    if (carouselRef.current) {
+      const card = carouselRef.current.children[index] as HTMLElement;
+      if (card) {
+        card.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+      }
+    }
+  };
+
+  const handleCarouselScroll = () => {
+    if (!carouselRef.current) return;
+    const container = carouselRef.current;
+    const scrollLeft = container.scrollLeft;
+    const cardWidth = (container.firstElementChild as HTMLElement)?.clientWidth || 280;
+    const newIndex = Math.round(scrollLeft / cardWidth);
+    if (newIndex >= 0 && newIndex < TOP_5_SHOOTS.length && newIndex !== activeShoot) {
+      setActiveShoot(newIndex);
+    }
+  };
+
+  const publishedServices = (services ?? []).filter((s) => s.published);
 
   return (
-    <section id="work" className="mx-auto max-w-[1280px] px-4 md:px-6 py-14 md:py-24">
+    <section id="services" className="mx-auto max-w-[1280px] px-4 md:px-6 py-12 md:py-24 relative">
+      <div id="work" className="absolute -top-24" />
       <Container>
-        {/* Header */}
-        <div className="flex flex-wrap items-end justify-between gap-6 mb-10">
+        {/* Section Header */}
+        <div className="flex flex-wrap items-end justify-between gap-6 mb-8">
           <div>
             <div className="font-mono-brand text-[10px] tracking-[0.2em] uppercase text-red mb-2 flex items-center gap-2">
               <span className="size-1.5 rounded-full bg-red animate-pulse" />
-              <span>Real Deliverables · Clear Pricing</span>
+              <span>Available Shoots &amp; Services · Transparent Pricing</span>
             </div>
-            <h2 className="font-display text-[36px] sm:text-[48px] lg:text-[60px] font-extrabold leading-[0.92] tracking-tight uppercase text-[#F0EBDC]">
+            <h2 className="font-display text-[32px] sm:text-[48px] lg:text-[60px] font-extrabold leading-[0.92] tracking-tight uppercase text-[#F0EBDC]">
               AVAILABLE <span className="text-[#E63838]">SHOOTS.</span>
             </h2>
           </div>
@@ -324,13 +414,37 @@ export function WorkWall({
           </div>
         </div>
 
-        {/* Top 5 Shoots Grid with Interactive Spotlight */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+        {/* Quick Shoot Switcher Pills (Mobile & Desktop) */}
+        <div className="flex items-center gap-2 overflow-x-auto pb-2.5 mb-4 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          {TOP_5_SHOOTS.map((shoot, idx) => (
+            <button
+              key={shoot.id}
+              type="button"
+              onClick={() => scrollToShoot(idx)}
+              className={`px-3.5 py-1.5 rounded-full text-xs font-mono-brand uppercase tracking-wider transition-all whitespace-nowrap cursor-pointer flex items-center gap-1.5 shrink-0 ${
+                idx === activeShoot
+                  ? "bg-red text-white font-bold shadow-md shadow-red/30"
+                  : "bg-white/[0.04] hover:bg-white/[0.08] text-white/60 border border-white/10"
+              }`}
+            >
+              <span>{shoot.id === "custom-other" ? "✦ Other / Custom" : shoot.title.split(" ")[0]}</span>
+              <span className="text-[10px] opacity-75">{shoot.price}</span>
+            </button>
+          ))}
+        </div>
+
+        {/* Top Shoots: 6-Column Grid on Desktop / Smooth Horizontal Snap Swipe on Mobile */}
+        <div
+          ref={carouselRef}
+          onScroll={handleCarouselScroll}
+          className="flex sm:grid overflow-x-auto sm:overflow-visible snap-x snap-mandatory sm:snap-none gap-4 pb-2 sm:pb-0 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden scroll-smooth -mx-4 px-4 sm:mx-0 sm:px-0"
+        >
           {TOP_5_SHOOTS.map((shoot, idx) => (
             <SpotlightShootCard
               key={shoot.id}
               active={idx === activeShoot}
-              onClick={() => setActiveShoot(idx)}
+              onClick={() => scrollToShoot(idx)}
+              className="w-[80vw] max-w-[285px] shrink-0 snap-center sm:w-auto sm:shrink sm:max-w-none"
             >
               {/* Visual Thumbnail with Viewfinder Camera HUD */}
               <div className="relative aspect-[4/5] w-full overflow-hidden bg-black">
@@ -410,37 +524,66 @@ export function WorkWall({
           ))}
         </div>
 
-        {/* Interactive Active Shoot Preview Banner */}
-        <div className="mt-6 p-4 rounded-xl bg-gradient-to-r from-red/[0.08] via-black/40 to-black/60 border border-red/25 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 backdrop-blur-md">
-          <div className="flex items-center gap-3">
-            <span className="size-2 rounded-full bg-red animate-ping shrink-0" />
-            <div>
-              <div className="flex items-center gap-2">
-                <span className="font-mono-brand text-[9px] uppercase tracking-[0.16em] text-red font-semibold">
-                  ACTIVE SELECTION ({activeShoot + 1}/5)
-                </span>
-                <span className="text-[10px] text-white/40 font-mono">✦</span>
-                <span className="text-white text-xs font-bold font-display uppercase">
-                  {TOP_5_SHOOTS[activeShoot]?.title}
-                </span>
-              </div>
-              <p className="text-[11px] text-white/60 font-sans mt-0.5">
-                {TOP_5_SHOOTS[activeShoot]?.description}
-              </p>
-            </div>
+        {/* Mobile Swipe / Pagination Indicators */}
+        <div className="flex sm:hidden items-center justify-between mt-3 px-1 text-xs font-mono-brand text-white/40">
+          <div className="flex items-center gap-1.5">
+            {TOP_5_SHOOTS.map((_, idx) => (
+              <button
+                key={idx}
+                type="button"
+                onClick={() => scrollToShoot(idx)}
+                aria-label={`Go to shoot ${idx + 1}`}
+                className={`h-1.5 rounded-full transition-all duration-300 cursor-pointer ${
+                  idx === activeShoot ? "w-6 bg-red" : "w-1.5 bg-white/20"
+                }`}
+              />
+            ))}
           </div>
-          <Link
-            href={`/enquire?service=${TOP_5_SHOOTS[activeShoot]?.slug}`}
-            onClick={() => trackEvent("package_cta_clicked", { content: TOP_5_SHOOTS[activeShoot]?.slug })}
-            className="inline-flex items-center gap-2 bg-red hover:bg-red/90 text-white font-mono-brand text-xs font-bold px-4 py-2.5 rounded-lg transition shadow-md shadow-red/25 active:scale-[0.98] uppercase tracking-wider shrink-0 cursor-pointer"
-          >
-            <span>Book {TOP_5_SHOOTS[activeShoot]?.title} ({TOP_5_SHOOTS[activeShoot]?.price})</span>
-            <span className="text-sm">→</span>
-          </Link>
+          <span className="text-[10px] uppercase tracking-wider text-white/50">
+            Swipe for more →
+          </span>
         </div>
 
+        {/* Collaborated Specialized Shoot Services Docket */}
+        {publishedServices.length > 0 && (
+          <div className="mt-6 p-3.5 sm:p-5 rounded-xl bg-white/[0.02] border border-white/[0.08]">
+            <div className="flex flex-wrap items-center justify-between gap-2 mb-2.5">
+              <div className="flex items-center gap-2">
+                <span className="size-1.5 rounded-full bg-red animate-pulse" />
+                <span className="font-mono-brand text-[10px] sm:text-[11px] uppercase tracking-[0.14em] text-white/80 font-bold">
+                  More Specialized Shoots
+                </span>
+                <span className="text-[10px] text-white/40 font-mono hidden sm:inline">✦ Custom &amp; Commercial</span>
+              </div>
+              <span className="font-mono-brand text-[9px] sm:text-[10px] text-red uppercase tracking-wider">
+                Instant WhatsApp Confirmation
+              </span>
+            </div>
+            {/* Compact 2-column on mobile, wrap on desktop */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:flex md:flex-wrap gap-1.5 sm:gap-2">
+              {publishedServices.map((service) => {
+                const icon = SERVICE_ICONS[service.slug] ?? "📸";
+                return (
+                  <Link
+                    key={service.id}
+                    href={`/enquire?service=${encodeURIComponent(service.slug)}`}
+                    onClick={() => trackEvent("package_cta_clicked", { content: service.slug })}
+                    className="group flex items-center justify-between gap-1.5 px-2.5 py-1.5 rounded-lg bg-white/[0.04] hover:bg-red/15 border border-white/10 hover:border-red/40 text-[11px] font-sans text-white/80 hover:text-white transition-all duration-200 cursor-pointer min-w-0"
+                  >
+                    <span className="flex items-center gap-1.5 truncate">
+                      <span className="text-xs shrink-0">{icon}</span>
+                      <span className="truncate font-medium">{service.name}</span>
+                    </span>
+                    <span className="text-[9px] text-white/30 group-hover:text-red transition-colors shrink-0">→</span>
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
         {/* Footer Guarantee banner */}
-        <div className="mt-10 p-4 rounded-xl bg-white/[0.02] border border-white/[0.06] flex flex-wrap items-center justify-between gap-4 text-xs font-mono-brand text-white/45">
+        <div className="mt-8 p-4 rounded-xl bg-white/[0.02] border border-white/[0.06] flex flex-wrap items-center justify-between gap-4 text-xs font-mono-brand text-white/45">
           <div className="flex items-center gap-2">
             <span className="text-red">✦</span>
             <span>CUSTOM PACKAGES AVAILABLE FOR TRAVEL &amp; MULTI-DAY FESTIVALS</span>

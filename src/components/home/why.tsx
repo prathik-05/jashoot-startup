@@ -166,7 +166,7 @@ export function Why({
         <div>
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#E63838]/10 border border-[#E63838]/20 text-[10px] font-mono-brand font-bold tracking-[0.18em] uppercase text-[#E63838]">
             <span className="w-1.5 h-1.5 rounded-full bg-red animate-pulse" />
-            03 // MULTI-EVENT DOMINANCE
+            MULTI-EVENT DOMINANCE
           </div>
           <h3 className="mt-5 font-display text-[34px] sm:text-[48px] lg:text-[60px] font-extrabold leading-[0.92] tracking-tight uppercase text-[#F0EBDC]">
             Why Hyderabad<br />
@@ -176,35 +176,36 @@ export function Why({
             We don&apos;t just shoot one thing — we capture the pulse of the city. From Dhoolpet festival visarjans at 4AM to midnight supercar rollouts on the ORR, Jubilee Hills club drops, and intimate royal weddings — we frame raw moments that break the internet.
           </p>
 
-          {/* Stats Bar */}
+          {/* Feature Highlights: 3-Column Grid on Desktop & Mobile with Clean Word Wrapping */}
           {features.length > 0 && (
-            <div className="mt-8 grid grid-cols-3 gap-2.5 max-w-[480px]">
+            <div className="mt-8 grid grid-cols-3 gap-2 sm:gap-2.5 max-w-[480px]">
               {features.slice(0, 3).map((f, i) => {
-                const isLong = f.title.length > 8;
+                const isHighlight = i === 2;
                 return (
                   <div
                     key={f.title}
-                    className={`rounded-xl border p-3 text-center transition-all duration-300 flex flex-col justify-center min-h-[88px] overflow-hidden ${
-                      i === features.length - 1
+                    className={`rounded-xl border p-2.5 sm:p-3.5 transition-all duration-300 flex flex-col items-center justify-center text-center min-h-[96px] overflow-hidden ${
+                      isHighlight
                         ? "bg-[#E63838] text-white border-[#E63838]"
-                        : "bg-surface border-white/[0.06] hover:border-white/15"
+                        : "bg-surface border-white/[0.08] hover:border-white/15"
                     }`}
                   >
-                    <div
-                      className={`font-display font-extrabold uppercase leading-tight tracking-tight break-words ${
-                        isLong ? "text-[12px] sm:text-[14px]" : "text-[20px] sm:text-[24px]"
-                      }`}
-                    >
-                      {f.title}
+                    <div className="font-display font-black uppercase text-[11px] sm:text-[14px] md:text-[15px] leading-tight tracking-tight text-center break-words w-full">
+                      {f.title === "CINEMATIC CAPTURE" ? (
+                        <>
+                          CINEMATIC<br />CAPTURE
+                        </>
+                      ) : (
+                        f.title
+                      )}
                     </div>
                     {f.description && (
                       <div
-                        className="text-[9px] font-mono-brand uppercase tracking-[0.14em] mt-1 line-clamp-2"
+                        className="text-[9px] sm:text-[10px] font-sans sm:font-mono-brand uppercase tracking-normal sm:tracking-[0.06em] leading-tight text-center mt-1.5 sm:mt-2"
                         style={{
-                          color:
-                            i === features.length - 1
-                              ? "rgba(255,255,255,0.85)"
-                              : "rgba(255,255,255,0.45)",
+                          color: isHighlight
+                            ? "rgba(255,255,255,0.92)"
+                            : "rgba(255,255,255,0.5)",
                         }}
                       >
                         {f.description}
@@ -262,7 +263,7 @@ export function Why({
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
             {/* Big Feature Banner Card */}
             <div
-              className={`sm:col-span-2 sm:row-span-2 rounded-2xl bg-gradient-to-br ${current.bgGradient} border border-white/10 aspect-square sm:aspect-auto sm:min-h-[260px] p-6 flex flex-col justify-between relative overflow-hidden transition-all duration-500`}
+              className={`sm:col-span-2 sm:row-span-2 rounded-2xl bg-gradient-to-br ${current.bgGradient} border border-white/10 p-5 sm:p-6 min-h-[200px] sm:min-h-[260px] flex flex-col justify-between relative overflow-hidden transition-all duration-500`}
             >
               {/* Background ambient lighting pulse */}
               <div
@@ -282,17 +283,17 @@ export function Why({
               </div>
 
               {/* Big Event Typography */}
-              <div className="my-auto py-4 z-10">
-                <div className="font-display text-[38px] sm:text-[48px] font-black uppercase leading-[0.88] tracking-[0.02em] text-[#F0EBDC]">
+              <div className="my-auto py-3 sm:py-4 z-10">
+                <div className="font-display text-[26px] sm:text-[44px] font-black uppercase leading-[0.9] tracking-[0.02em] text-[#F0EBDC]">
                   {current.titleLine1}
                 </div>
                 <div
-                  className="font-display text-[38px] sm:text-[48px] font-black uppercase leading-[0.88] tracking-[0.02em] mt-1"
+                  className="font-display text-[26px] sm:text-[44px] font-black uppercase leading-[0.9] tracking-[0.02em] mt-0.5"
                   style={{ color: current.accentColor }}
                 >
                   {current.titleLine2}
                 </div>
-                <div className="mt-4 inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white text-black text-[10px] font-ui font-bold tracking-[0.14em] uppercase shadow-lg">
+                <div className="mt-3 sm:mt-4 inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white text-black text-[9px] sm:text-[10px] font-ui font-bold tracking-[0.14em] uppercase shadow-lg">
                   <span>{current.tagIcon}</span>
                   <span>{current.badge}</span>
                 </div>
@@ -310,60 +311,63 @@ export function Why({
               </div>
             </div>
 
-            {/* Sidecard 1 */}
-            <div className="rounded-2xl bg-surface/80 border border-white/[0.08] p-4 flex flex-col justify-between">
-              <div className="flex items-center justify-between">
-                <svg className="w-4 h-4 text-red" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                  <circle cx="12" cy="12" r="10" />
-                  <path d="M12 6v6l4 2" />
-                </svg>
-                <span className="font-mono-brand text-[8px] uppercase tracking-wider text-white/30">
-                  ADVANTAGE
-                </span>
-              </div>
-              <div className="mt-3">
-                <div className="font-ui font-bold text-[13px] uppercase tracking-[0.04em] text-white">
-                  {current.topCardTitle}
+            {/* Sidecards Container: 2-Column Grid on Mobile, Stacked flex on Desktop */}
+            <div className="grid grid-cols-2 sm:flex sm:flex-col gap-2.5 sm:col-span-1">
+              {/* Sidecard 1: ADVANTAGE */}
+              <div className="rounded-2xl bg-surface/80 border border-white/[0.08] p-3 sm:p-4 flex flex-col justify-between">
+                <div className="flex items-center justify-between">
+                  <svg className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-red" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                    <circle cx="12" cy="12" r="10" />
+                    <path d="M12 6v6l4 2" />
+                  </svg>
+                  <span className="font-mono-brand text-[8px] uppercase tracking-wider text-white/30">
+                    ADVANTAGE
+                  </span>
                 </div>
-                <div className="mt-1 text-[11px] font-sans text-white/40 leading-snug">
-                  {current.topCardSub}
+                <div className="mt-2.5 sm:mt-3">
+                  <div className="font-ui font-bold text-[11px] sm:text-[13px] uppercase tracking-[0.04em] text-white leading-tight">
+                    {current.topCardTitle}
+                  </div>
+                  <div className="mt-1 text-[10px] sm:text-[11px] font-sans text-white/40 leading-snug line-clamp-2">
+                    {current.topCardSub}
+                  </div>
                 </div>
               </div>
-            </div>
 
-            {/* Sidecard 2 */}
-            <div className="rounded-2xl bg-red p-4 flex flex-col justify-between text-white shadow-lg shadow-red/25">
-              <div className="flex items-center justify-between">
-                <svg className="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                  <path d="M13 3L4 14h7l-2 7 9-11h-7l2-7z" />
-                </svg>
-                <span className="font-mono-brand text-[8px] uppercase tracking-wider text-white/80">
-                  SPEED SLA
-                </span>
-              </div>
-              <div className="mt-3">
-                <div className="font-ui font-bold text-[13px] uppercase leading-tight tracking-[0.04em]">
-                  {current.bottomCardTitle}
+              {/* Sidecard 2: SPEED SLA */}
+              <div className="rounded-2xl bg-red p-3 sm:p-4 flex flex-col justify-between text-white shadow-lg shadow-red/25">
+                <div className="flex items-center justify-between">
+                  <svg className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                    <path d="M13 3L4 14h7l-2 7 9-11h-7l2-7z" />
+                  </svg>
+                  <span className="font-mono-brand text-[8px] uppercase tracking-wider text-white/80">
+                    SPEED SLA
+                  </span>
                 </div>
-                <div className="mt-1 text-[11px] font-sans text-white/85 leading-snug">
-                  {current.bottomCardSub}
+                <div className="mt-2.5 sm:mt-3">
+                  <div className="font-ui font-bold text-[11px] sm:text-[13px] uppercase leading-tight tracking-[0.04em]">
+                    {current.bottomCardTitle}
+                  </div>
+                  <div className="mt-1 text-[10px] sm:text-[11px] font-sans text-white/85 leading-snug line-clamp-2">
+                    {current.bottomCardSub}
+                  </div>
                 </div>
               </div>
             </div>
 
             {/* Bottom Strip */}
-            <div className="sm:col-span-3 rounded-2xl bg-[#F0EBDC] text-black p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-xl">
+            <div className="sm:col-span-3 rounded-2xl bg-[#F0EBDC] text-black p-3.5 sm:p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-xl">
               <div>
-                <div className="font-ui font-bold uppercase tracking-[0.14em] text-[11px] flex items-center gap-1.5">
+                <div className="font-ui font-bold uppercase tracking-[0.14em] text-[10px] sm:text-[11px] flex items-center gap-1.5">
                   <span>{current.quoteTitle}</span>
                 </div>
-                <div className="font-sans text-[11px] text-black/60 mt-0.5">
+                <div className="font-sans text-[10px] sm:text-[11px] text-black/60 mt-0.5">
                   {current.quoteSub}
                 </div>
               </div>
               <Link
                 href={`/enquire?service=${current.enquiryService}`}
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-black text-white text-[10px] font-mono-brand font-bold uppercase tracking-wider hover:bg-red transition-colors shrink-0 cursor-pointer"
+                className="inline-flex items-center gap-2 px-3.5 sm:px-4 py-2 rounded-full bg-black text-white text-[10px] font-mono-brand font-bold uppercase tracking-wider hover:bg-red transition-colors shrink-0 cursor-pointer"
               >
                 <span>BOOK THIS EVENT</span>
                 <span>→</span>

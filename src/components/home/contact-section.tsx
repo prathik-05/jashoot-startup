@@ -245,7 +245,7 @@ export function ContactSection() {
           <div>
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red/10 border border-red/20 text-red font-mono-brand text-[11px] tracking-[0.16em] uppercase mb-4">
               <span className="w-1.5 h-1.5 rounded-full bg-red animate-pulse" />
-              04 // BOOKING &amp; RESERVATION
+              BOOKING &amp; RESERVATION
             </div>
             <h2 className="font-display text-[44px] md:text-[64px] lg:text-[76px] leading-[0.88] tracking-[0.02em] uppercase font-extrabold text-[#F0EBDC]">
               BOOK <span className="text-[#E63838]">NOW.</span>
