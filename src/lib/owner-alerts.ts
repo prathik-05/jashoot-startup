@@ -58,9 +58,11 @@ export async function notifyOwnerOfNewLead(lead: OwnerAlertPayload): Promise<{
 
   // ── 1. CallMeBot WhatsApp Gateway (100% Free Instant WhatsApp Alert) ──────
   const callMeBotKey = process.env.CALLMEBOT_API_KEY?.trim();
+  const envOwner = process.env.OWNER_WHATSAPP_NUMBER?.trim();
+  const envPublic = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER?.trim();
   const ownerPhone = (
-    process.env.OWNER_WHATSAPP_NUMBER ||
-    process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ||
+    (envOwner && !envOwner.includes("9398794825") ? envOwner : null) ||
+    (envPublic && !envPublic.includes("9398794825") ? envPublic : null) ||
     "916304276820"
   ).replace(/\D/g, "");
 

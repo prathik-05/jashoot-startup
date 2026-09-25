@@ -238,7 +238,11 @@ function requireEnv(name: string, fallback: string): string {
   return fallback;
 }
 
-const rawWhatsApp = requireEnv("NEXT_PUBLIC_WHATSAPP_NUMBER", "916304276820");
+const envWhatsApp = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER?.trim();
+const rawWhatsApp =
+  envWhatsApp && !envWhatsApp.includes("9398794825")
+    ? envWhatsApp
+    : "916304276820";
 export const WHATSAPP_NUMBER =
   rawWhatsApp.replace(/\D/g, "").length === 10
     ? `91${rawWhatsApp.replace(/\D/g, "")}`
