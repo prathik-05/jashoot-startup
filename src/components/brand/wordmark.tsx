@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 export function Wordmark({
   className = "",
   size = "md",
@@ -6,18 +8,23 @@ export function Wordmark({
   size?: "sm" | "md" | "lg";
   showSubtitle?: boolean;
 }) {
-  const sizeClass =
+  const heightClass =
     size === "lg"
-      ? "text-[2rem] sm:text-[2.5rem]"
+      ? "h-10 sm:h-12"
       : size === "sm"
-      ? "text-[1.25rem]"
-      : "text-[1.55rem]";
+      ? "h-7"
+      : "h-8 md:h-9";
 
   return (
-    <div className={`inline-flex flex-col select-none ${className}`} aria-label="JASHOOTS">
-      <span className={`font-display ${sizeClass} font-extrabold leading-none tracking-[-0.08em] text-[#f0ebdc]`}>
-        JA<span className="text-[#E63838]">S</span>HOOTS
-      </span>
+    <div className={`inline-flex items-center select-none ${className}`} aria-label="JASHOOTS">
+      <Image
+        src="/logo-transparent.png"
+        alt="JASHOOTS"
+        width={140}
+        height={40}
+        className={`${heightClass} w-auto object-contain`}
+        priority
+      />
     </div>
   );
 }

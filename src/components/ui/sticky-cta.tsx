@@ -7,7 +7,7 @@ import { WhatsAppIcon } from "./whatsapp-cta";
 
 export function StickyWhatsAppBar() {
   return (
-    <div className="fixed inset-x-0 bottom-0 z-40 border-t border-border bg-canvas/95 backdrop-blur-xl md:hidden">
+    <div className="fixed inset-x-0 bottom-0 z-40 border-t border-white/[0.08] bg-[#07070A]/95 backdrop-blur-2xl shadow-[0_-4px_24px_rgba(0,0,0,0.8)] md:hidden">
       <div className="flex items-center gap-3 px-4 py-2.5">
         <div className="min-w-0 flex-1">
           <p className="truncate font-display text-[0.6rem] uppercase tracking-wide text-white">

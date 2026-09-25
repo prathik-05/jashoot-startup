@@ -256,7 +256,7 @@ export function ContactSection() {
           </div>
 
           {/* Booking Template Card */}
-          <div className="rounded-2xl bg-surface/70 border border-white/[0.08] p-5 sm:p-7 space-y-4 backdrop-blur-sm shadow-xl shadow-black/40">
+          <div className="rounded-2xl bg-[#0C0C10]/90 border border-white/[0.08] p-5 sm:p-7 space-y-4 backdrop-blur-xl shadow-2xl shadow-black/60">
             {/* Primary Action 1: BOOK NOW -> Enquire Page */}
             <div className="p-4 sm:p-5 rounded-xl bg-white/[0.03] border border-white/[0.07] hover:border-red/40 transition-all duration-300 group">
               <div className="flex items-center justify-between mb-2">
@@ -367,7 +367,7 @@ export function ContactSection() {
         </div>
 
         {/* Right: UPGRADED INTERACTIVE RADAR & FLIGHT DISPATCH HUD */}
-        <div className="rounded-2xl overflow-hidden bg-gradient-to-b from-[#141316] via-[#100F12] to-[#0D0D10] border border-white/[0.12] shadow-2xl shadow-black/60 flex flex-col">
+        <div className="rounded-2xl overflow-hidden bg-gradient-to-b from-[#0F0F14] via-[#0C0C10] to-[#08080B] border border-white/[0.08] shadow-2xl shadow-black/70 flex flex-col">
           {/* Top HUD Header with Mode Switcher & Telemetry */}
           <div className="p-3.5 sm:p-4 bg-black/40 border-b border-white/[0.08] flex flex-wrap items-center justify-between gap-3">
             <div className="flex items-center gap-2">

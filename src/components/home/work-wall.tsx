@@ -330,7 +330,7 @@ function SpotlightShootCard({
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       onClick={onClick}
-      className={`group relative rounded-2xl overflow-hidden bg-[#11100F] border flex flex-col justify-between transition-all duration-300 cursor-pointer shadow-xl shadow-black/40 hover:-translate-y-1.5 select-none ${
+      className={`group relative rounded-2xl overflow-hidden bg-[#0C0C10] border flex flex-col justify-between transition-all duration-300 cursor-pointer shadow-xl shadow-black/50 hover:-translate-y-1.5 select-none ${
         active
           ? "border-red ring-1 ring-red/50 shadow-red/20"
           : "border-white/[0.08] hover:border-red/40"
@@ -480,7 +480,7 @@ export function WorkWall({
                 </div>
 
                 {/* Bottom gradient fade into card body */}
-                <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-[#11100F] to-transparent pointer-events-none" />
+                <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-[#0C0C10] to-transparent pointer-events-none" />
               </div>
 
               {/* Card Information */}
@@ -546,7 +546,7 @@ export function WorkWall({
 
         {/* Collaborated Specialized Shoot Services Docket */}
         {publishedServices.length > 0 && (
-          <div className="mt-6 p-3.5 sm:p-5 rounded-xl bg-white/[0.02] border border-white/[0.08]">
+          <div className="mt-6 p-3.5 sm:p-5 rounded-2xl bg-[#0C0C10]/90 backdrop-blur-md border border-white/[0.08] shadow-2xl">
             <div className="flex flex-wrap items-center justify-between gap-2 mb-2.5">
               <div className="flex items-center gap-2">
                 <span className="size-1.5 rounded-full bg-red animate-pulse" />

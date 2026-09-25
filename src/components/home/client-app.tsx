@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Section, SectionHead } from "../ui/section";
 
 export function ClientExperience({ settings }: { settings: { headline?: string } }) {
@@ -65,7 +66,13 @@ export function AppCta({ settings }: { settings: { headline?: string; sub?: stri
         <div className="mx-auto w-full max-w-[260px]" aria-hidden="true">
           <div className="rounded-[2.5rem] border-[5px] border-shell bg-shell p-2">
             <div className="rounded-[2rem] bg-canvas p-3.5">
-              <p className="font-display text-[0.55rem] text-white">JASHOOTS.</p>
+              <Image
+                src="/logo-transparent.png"
+                alt="JASHOOTS"
+                width={80}
+                height={22}
+                className="h-3.5 w-auto object-contain"
+              />
               <div className="mt-2.5 space-y-1.5">
                 <div className="h-14 rounded-xl bg-gradient-to-br from-red/20 to-red/5 border border-red/10" />
                 <div className="flex gap-1.5">

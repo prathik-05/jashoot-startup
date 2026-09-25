@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useState } from "react";
 
 const NAV = [
@@ -12,26 +13,31 @@ const NAV = [
 export function Header() {
   const [open, setOpen] = useState(false);
   return (
-    <header className="sticky top-0 z-50 surface-carbon/80 backdrop-blur-md border-b border-white/8">
+    <header className="sticky top-0 z-50 bg-[#08080B]/85 backdrop-blur-xl border-b border-white/[0.06] shadow-[0_4px_30px_rgba(0,0,0,0.7)]">
       <div className="container h-[60px] md:h-[68px] flex items-center justify-between">
         <div className="flex items-center gap-10">
-          <Link href="/" className="group flex flex-col justify-center select-none" aria-label="JASHOOTS home">
-            <span className="font-display text-[1.55rem] font-extrabold leading-none tracking-[-0.08em] text-[#f0ebdc] transition-transform duration-200 group-hover:scale-[1.02]">
-              JA<span className="text-[#E63838]">S</span>HOOTS
-            </span>
+          <Link href="/" className="group flex items-center select-none" aria-label="JASHOOTS home">
+            <Image
+              src="/logo-transparent.png"
+              alt="JASHOOTS"
+              width={140}
+              height={40}
+              priority
+              className="h-8 md:h-9 w-auto object-contain transition-transform duration-200 group-hover:scale-[1.03]"
+            />
           </Link>
-          <nav className="hidden md:flex items-center gap-4 nav-pill" aria-label="Primary">
+          <nav className="hidden md:flex items-center gap-4 px-4 py-2 rounded-full bg-white/[0.03] border border-white/[0.08] backdrop-blur-md" aria-label="Primary">
             {NAV.map((n) => (
               <Link
                 key={n.href + n.label}
                 href={n.href}
-                className="nav-link"
+                className="nav-link hover:text-white transition-colors"
               >
                 {n.label}
               </Link>
             ))}
             <span className="w-px h-3.5 bg-white/10" aria-hidden="true" />
-            <span className="text-on-dark-muted">HYD</span>
+            <span className="text-on-dark-muted text-xs font-mono-brand">HYD</span>
           </nav>
         </div>
         <div className="flex items-center gap-3">
@@ -46,7 +52,7 @@ export function Header() {
             onClick={() => setOpen(!open)}
             aria-expanded={open}
             aria-label="Toggle menu"
-            className="md:hidden w-9 h-9 grid place-items-center rounded-full border border-white/10 hover:border-white/20 transition-colors focus-ring"
+            className="md:hidden w-9 h-9 grid place-items-center rounded-full bg-white/[0.03] border border-white/10 hover:border-white/20 transition-colors focus-ring"
           >
             <div className="space-y-[3px]">
               <div className={`w-3.5 h-[1.5px] bg-white transition-all duration-300 ${open ? "rotate-45 translate-y-[4.5px]" : ""}`} />
@@ -57,7 +63,7 @@ export function Header() {
         </div>
       </div>
       {open && (
-        <div className="md:hidden border-t border-white/8 surface-carbon/80 backdrop-blur-md px-4 py-5 flex flex-col gap-3 animate-fade-up">
+        <div className="md:hidden border-t border-white/[0.06] bg-[#08080B]/95 backdrop-blur-2xl px-4 py-5 flex flex-col gap-3 animate-fade-up shadow-2xl">
           {NAV.map((n) => (
             <Link key={n.href + n.label} href={n.href} onClick={() => setOpen(false)} className="nav-link text-body-medium uppercase tracking-[0.16em] text-on-dark/60 hover:text-on-dark transition-colors py-2">
               {n.label}

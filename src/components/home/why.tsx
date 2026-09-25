@@ -186,8 +186,8 @@ export function Why({
                     key={f.title}
                     className={`rounded-xl border p-2.5 sm:p-3.5 transition-all duration-300 flex flex-col items-center justify-center text-center min-h-[96px] overflow-hidden ${
                       isHighlight
-                        ? "bg-[#E63838] text-white border-[#E63838]"
-                        : "bg-surface border-white/[0.08] hover:border-white/15"
+                        ? "bg-gradient-to-b from-[#E63838]/20 to-[#E63838]/5 text-white border-[#E63838]/40 shadow-[0_0_24px_rgba(230,56,56,0.15)]"
+                        : "bg-[#0E0E13] border-white/[0.08] hover:border-white/15"
                     }`}
                   >
                     <div className="font-display font-black uppercase text-[11px] sm:text-[14px] md:text-[15px] leading-tight tracking-tight text-center break-words w-full">
@@ -223,7 +223,7 @@ export function Why({
         <div
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={() => setIsPaused(false)}
-          className="relative rounded-[24px] overflow-hidden bg-[#11100F] border border-white/[0.08] p-4 sm:p-6 shadow-2xl shadow-black/50 transition-all duration-500"
+          className="relative rounded-[24px] overflow-hidden bg-[#0C0C10] border border-white/[0.08] p-4 sm:p-6 shadow-2xl shadow-black/60 transition-all duration-500"
         >
           {/* Top Event Selector Pills */}
           <div className="mb-4 flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none">

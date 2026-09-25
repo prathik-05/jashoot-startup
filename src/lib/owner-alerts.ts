@@ -61,7 +61,7 @@ export async function notifyOwnerOfNewLead(lead: OwnerAlertPayload): Promise<{
   const ownerPhone = (
     process.env.OWNER_WHATSAPP_NUMBER ||
     process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ||
-    "919398794825"
+    "916304276820"
   ).replace(/\D/g, "");
 
   if (callMeBotKey && ownerPhone) {

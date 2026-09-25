@@ -15,10 +15,10 @@ const TICKER_ITEMS = [
 
 export function LiveTicker() {
   return (
-    <div className="relative w-full overflow-hidden border-y border-white/[0.08] bg-black/40 py-3 backdrop-blur-md select-none">
+    <div className="relative w-full overflow-hidden border-y border-white/[0.08] bg-[#08080B]/80 py-3 backdrop-blur-md select-none">
       {/* Left and Right Gradient Fades */}
-      <div className="pointer-events-none absolute left-0 top-0 bottom-0 z-10 w-16 sm:w-24 bg-gradient-to-r from-black to-transparent" />
-      <div className="pointer-events-none absolute right-0 top-0 bottom-0 z-10 w-16 sm:w-24 bg-gradient-to-l from-black to-transparent" />
+      <div className="pointer-events-none absolute left-0 top-0 bottom-0 z-10 w-16 sm:w-24 bg-gradient-to-r from-[#08080B] to-transparent" />
+      <div className="pointer-events-none absolute right-0 top-0 bottom-0 z-10 w-16 sm:w-24 bg-gradient-to-l from-[#08080B] to-transparent" />
 
       {/* Marquee Track */}
       <div className="animate-marquee flex items-center whitespace-nowrap">

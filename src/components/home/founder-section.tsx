@@ -1,9 +1,9 @@
 export function FounderSection() {
   return (
-    <section id="founder" className="bg-panel/30 border-y border-white/[0.04] overflow-hidden">
+    <section id="founder" className="bg-[#08080B] border-y border-white/[0.06] overflow-hidden relative">
       <div className="mx-auto max-w-[1280px] px-4 md:px-6 py-12 md:py-20 grid md:grid-cols-[380px_1fr] gap-8">
         {/* Profile Card */}
-        <div className="rounded-[20px] bg-shell border border-white/[0.06] p-6">
+        <div className="rounded-[20px] bg-[#0C0C10] border border-white/[0.08] p-6 shadow-2xl">
           <div className="flex items-center gap-4">
             <div className="w-18 h-18 rounded-full bg-gradient-to-br from-zinc-700 to-zinc-900 border-2 border-white/[0.08] grid place-items-center font-display text-[26px] text-white/80">
               J
@@ -25,7 +25,7 @@ export function FounderSection() {
           </div>
 
           {/* Bio */}
-          <div className="mt-5 p-4 rounded-xl bg-canvas/60 border border-white/[0.04]">
+          <div className="mt-5 p-4 rounded-xl bg-[#08080B] border border-white/[0.05]">
             <div className="font-ui text-[9px] font-semibold tracking-[0.18em] uppercase text-white/25">
               Bio
             </div>
@@ -35,7 +35,7 @@ export function FounderSection() {
           </div>
 
           {/* Telugu Voiceover */}
-          <div className="mt-3 p-4 rounded-xl bg-red-dim border border-red/15">
+          <div className="mt-3 p-4 rounded-xl bg-[#E63838]/[0.08] border border-[#E63838]/20">
             <div className="font-ui text-[9px] font-semibold tracking-[0.18em] uppercase text-red">
               Telugu Voiceover
             </div>
@@ -60,7 +60,7 @@ export function FounderSection() {
           </p>
 
           {/* Gear */}
-          <div className="w-full mt-5 rounded-2xl bg-surface border border-white/[0.08] p-4 sm:p-5 md:p-6 flex gap-3.5 sm:gap-4 items-start min-w-0 box-border">
+          <div className="w-full mt-5 rounded-2xl bg-[#0C0C10] border border-white/[0.08] p-4 sm:p-5 md:p-6 flex gap-3.5 sm:gap-4 items-start min-w-0 box-border shadow-xl">
             <div className="w-9 h-9 rounded-full bg-red grid place-items-center shrink-0">
               <svg className="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                 <path d="M13 3L4 14h7l-2 7 9-11h-7l2-7z" />

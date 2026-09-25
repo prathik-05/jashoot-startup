@@ -1,9 +1,10 @@
 import Link from "next/link";
+import Image from "next/image";
 import { CITY, INSTAGRAM_URL, INSTAGRAM_HANDLE, TAGLINE } from "@/lib/schema";
 
 export function Footer() {
   return (
-    <footer className="relative mt-12 bg-black/50 border-t border-white/[0.04] overflow-hidden">
+    <footer className="relative mt-12 bg-[#060608] border-t border-white/[0.06] overflow-hidden">
       {/* LAMP pattern background */}
       <div className="absolute inset-0 opacity-[0.04]">
         <svg viewBox="0 0 1200 200" className="w-full h-full" preserveAspectRatio="none">
@@ -43,11 +44,15 @@ export function Footer() {
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
           {/* Brand */}
           <div className="flex items-center gap-4 select-none">
-            <div className="flex flex-col">
-              <span className="font-display text-[1.55rem] font-extrabold leading-none tracking-[-0.08em] text-[#f0ebdc]">
-                JA<span className="text-[#E63838]">S</span>HOOTS
-              </span>
-            </div>
+            <Link href="/" className="flex items-center" aria-label="JASHOOTS home">
+              <Image
+                src="/logo-transparent.png"
+                alt="JASHOOTS"
+                width={140}
+                height={40}
+                className="h-8 md:h-9 w-auto object-contain"
+              />
+            </Link>
             <span className="px-3 py-1 rounded-full border border-white/10 surface-dark-carbon text-[9px] font-mono-brand uppercase tracking-[0.15em] text-white/50">
               {TAGLINE} ✦
             </span>
